@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>DownTown Places</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="dist/css/skins/skin-red.min.css">
+  <style type="text/css">
+  #attr {
+    margin: 15px;
+    color: white;
+  }
+  .places {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+    </style>
+</head>
+<body class="hold-transition skin-red fixed">
+<div class="wrapper">
+
+  <!-- Main Header -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="" class="logo">
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>DownTown</b>Places</span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+      </a>
+        <p class="navbar-text pull-right" id="attr">Places provided by  <i class="fa fa-foursquare"></i>oursquare</p>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" data-bind='value: inputString, valueUpdate: "afterkeydown"' class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <!-- ko if: !listResult()[0] -->
+        <li class="header"><h4 class="text-center">No Results <i class="fa fa-exclamation-circle text-red"></i></h4></li>
+        <!-- /ko -->
+        <!-- ko if: listResult()[0] -->
+        <!-- ko foreach: listResult -->
+          <li data-bind="event: {click: $parent.showInfo, mouseover: $parent.markerBounce, mouseout: $parent.markerStill}"><a class="places" href="#"><i class="fa fa-map-pin"></i> <span data-bind="text: $data.name"></span></a></li>
+        <!-- /ko -->
+        <!-- /ko -->
+
+      </ul>
+
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" id="map">
+  </div>
+  <!-- /.content-wrapper -->
+
+  <div class="modal modal-danger fade" id="api-error">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">DownTown Places Cannot connect to Foursquare</h4>
+        </div>
+        <div class="modal-body">
+          <p>DownTown Places App is depending on Foursquare API to retreive places locations and information  &hellip;</p>
+          <p>But it seems that there was an error when trying to connect to Foursquare:</p>
+          <code class="text-red" id="error-msg"></code>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
+
+</div>
+<!-- ./wrapper -->
+
+<script src="plugins/knockout/knockout-3.4.2.js"></script>
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/app.js"></script>
+<script src="dist/js/mvvm.js"></script>
+<script src="dist/js/maps_api.js"></script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAogzGUFTi3CxWx4W5jR_Z6eTxNKBUk6O0&callback=initMap">
+</script>
+</body>
+</html>
