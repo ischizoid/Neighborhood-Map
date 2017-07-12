@@ -97,7 +97,7 @@ var ViewModel = function (places, apiError) {
     for (var i = 0; i < mapObj.markers.length; i++) {
       mapObj.markers[i].setMap(null);
     }
-    for (var i = 0; i < self.places.length; i++) {
+    for (i = 0; i < self.places.length; i++) {
       var place = self.places[i];
       var input = self.inputString();
       var marker = self.getMarker(place);
@@ -117,6 +117,6 @@ var ViewModel = function (places, apiError) {
       mapObj.map.fitBounds(mapObj.bounds);
       return null;
     }
-    return result
+    return result;
   }, this);
 };
