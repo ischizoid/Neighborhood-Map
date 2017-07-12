@@ -2,6 +2,8 @@
   margin: 15px;
   color: white;
 }
+
+
 .places {
   white-space: nowrap;
   text-overflow: ellipsis;

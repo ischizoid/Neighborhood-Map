@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>DownTown Places</title>
   <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes" name="viewport">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -44,7 +44,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
-<!-- ko ifnot: apiError -->
+<!-- ko ifnot: error -->
       <!-- search form -->
       <form class="sidebar-form">
         <div class="input-group">
@@ -60,7 +60,7 @@
       <ul class="sidebar-menu">
         <li data-bind="visible: !listResult()" class="header"><h4 class="text-center">No Results <i class="fa fa-exclamation-circle text-red"></i></h4></li>
         <!-- ko foreach: listResult -->
-          <li data-bind="event: {click: $parent.showInfo, mouseover: $parent.markerBounce, mouseout: $parent.markerStill}, css:{active: $parent.selectedPlace()===$data}"><a class="places" href="#"><i class="fa fa-map-pin"></i><small data-bind="visible: $parent.showCategories, text: $data.category" class="label bg-blue"></small> <span data-bind="text: $data.name"></span></a></li>
+          <li data-bind="event: {click: $parent.showInfo}, css:{active: $parent.selectedPlace()===$data}"><a class="places" href="#"><i class="fa fa-map-pin"></i><small data-bind="visible: $parent.showCategories, text: $data.category" class="label bg-blue"></small> <span data-bind="text: $data.name"></span></a></li>
         <!-- /ko -->
       </ul>
 <!-- /ko -->
@@ -76,16 +76,16 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <div data-bind="css: { show: apiError() }" class="modal modal-danger">
+  <div data-bind="css: { show: error() }" class="modal modal-danger">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">DownTown Places Cannot connect to Foursquare</h4>
         </div>
         <div class="modal-body">
-          <p>DownTown Places App is depending on Foursquare API to retreive places locations and information  ,
-            But it seems that there was an error when trying to connect to Foursquare.</p>
-          <p>Error: <code data-bind="text: apiError"></code></p>
+          <p>DownTown Places App is depending on Foursquare API to retreive places locations and information
+            and Google Maps API , But it seems that there was an error in connection.</p>
+          <p>Error: <code data-bind="text: error"></code></p>
         </div>
         <div class="modal-footer">
           <a href="" class="btn btn-success">Retry</a>
@@ -97,7 +97,7 @@
   </div>
   <!-- /.modal -->
 
-  <div data-bind="css: { show: !listResult()&&!apiError() }" class="modal modal-warning">
+  <div data-bind="css: { show: !listResult()&&!error() }" class="modal modal-warning">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -134,7 +134,7 @@
 <script src="dist/js/app.js"></script>
 <script src="js/app.js"></script>
 <script src="js/map.js"></script>
-<script async defer
+<script onerror="logMapError()" async defer
   src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAogzGUFTi3CxWx4W5jR_Z6eTxNKBUk6O0&callback=initMap">
 </script>
 </body>

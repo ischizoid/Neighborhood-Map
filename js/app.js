@@ -1,4 +1,7 @@
+var apiError;
+var mapError;
 var places = [];
+
 // ajax call to foursquare
 // exploring venues at specefic lat&lng with radius of 10KM
 $.ajax('https://api.foursquare.com/v2/venues/explore', {
@@ -14,14 +17,15 @@ $.ajax('https://api.foursquare.com/v2/venues/explore', {
     getPlaces(data);
   },
   error: function (jqXHR, textStatus, errorThrown) {
+    apiError = 'foursquare API ERROR - ' + jqXHR.responseJSON.meta.errorDetail;
     // console.log(errorThrown);
     // console.log(textStatus);
     // console.log(jqXHR.responseJSON.meta.errorDetail);
   }
 }).complete(function(jqXHR) {
-  var apiError = jqXHR.responseJSON.meta.errorDetail;
-  ko.applyBindings(new ViewModel(places, apiError));
+  ko.applyBindings(new ViewModel(places, apiError, mapError));
 });
+
 
 // parsing api response and create array of places
 var getPlaces = function (data) {
@@ -48,18 +52,21 @@ var getPlaces = function (data) {
 };
 
 
-var ViewModel = function (places, apiError) {
+var ViewModel = function (places, apiError, mapError) {
   var self = this;
   this.places = places;
-  this.done = ko.observable(null);
-  this.apiError = ko.observable();
-  this.selectedPlace = ko.observable();
+  this.error = ko.observable();
   this.inputString = ko.observable('');
+  this.selectedPlace = ko.observable();
   this.showCategories = ko.observable(false);
   // if no errot at ajax call, pass places to makeMarkers function
   // listen to changing the center of map
-  if (apiError) {
-    this.apiError(apiError);
+  if (apiError||mapError) {
+    if (mapError) {
+      this.error(mapError);
+    }else {
+      this.error(apiError);
+    }
   }else {
     mapObj.makeMarkers(places);
     mapObj.map.addListener('center_changed', function () {
@@ -76,22 +83,22 @@ var ViewModel = function (places, apiError) {
   };
   // showInfo of place and repostion the map center
   this.showInfo = function(place) {
-    var marker = self.getMarker(place);
-    mapObj.populateInfoWindow(marker, mapObj.largeInfowindow, place);
-    mapObj.map.panTo(marker.position);
-    self.selectedPlace(place);
-  };
-  this.markerBounce = function(place) {
+    for (var i = 0; i < mapObj.markers.length; i++) {
+      mapObj.markers[i].setAnimation(null);
+    }
     var marker = self.getMarker(place);
     marker.setAnimation(google.maps.Animation.BOUNCE);
-  };
-  this.markerStill = function(place) {
-    var marker = self.getMarker(place);
-    marker.setAnimation(null);
+    mapObj.populateInfoWindow(marker, mapObj.infoWindow, place);
+    mapObj.map.panTo(marker.position);
+    mapObj.map.panBy(0,-100);
+    self.selectedPlace(place);
   };
   // filter through places (.names and .category) and repostion map by places result bounds
   this.listResult = ko.computed(function() {
     var result = [];
+    if (self.error()) {
+      return null;
+    }
     self.showCategories(false);
     var bounds = new google.maps.LatLngBounds();
     for (var i = 0; i < mapObj.markers.length; i++) {
@@ -111,7 +118,10 @@ var ViewModel = function (places, apiError) {
       }
     }
     if (result[0]) {
-      mapObj.map.fitBounds(bounds, 100);
+      mapObj.map.fitBounds(bounds);
+      google.maps.event.addDomListener(window, 'resize', function() {
+        mapObj.map.fitBounds(bounds);
+      });
     }
     if (!result[0]) {
       mapObj.map.fitBounds(mapObj.bounds);

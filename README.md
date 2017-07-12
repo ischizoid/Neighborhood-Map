@@ -33,7 +33,7 @@ If needed to change the neighborhood to any other location,
 just reconfigure lat-lng as follows:
 
 
-1- at mvvm.js :
+1- at app.js :
 ```
 ll: '29.9626961,31.2769423'
 
