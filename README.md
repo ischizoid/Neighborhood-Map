@@ -13,7 +13,6 @@ Clone the Repository.
 Neighborhood Map depends on:
 ```
 - jQuery v2.2
-- FastClickJS [UI-plugin]
 - KnockoutJS v3
 - Bootstrap 3
 - adminLTE v2.3 [UI]
