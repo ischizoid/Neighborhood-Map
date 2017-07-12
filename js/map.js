@@ -51,12 +51,12 @@ function logMapError() {
 
 function initMap() {
   var mapStyles = [];
-  fetch('map-styles.json').then(function(response) {
-  	response.json().then(function(data) {
-      for (var i = 0; i < data.length; i++) {
-        mapStyles.push(data[i]);
-      }
-    });
+  $.getJSON('map-styles.json', function(data) {
+    for (var i = 0; i < data.length; i++) {
+      mapStyles.push(data[i]);
+    }
+  }).fail(function(err) {
+    mapError = 'map styles loading error '
   });
   var map = new google.maps.Map(document.getElementById('map'), {
     center: centerPos,

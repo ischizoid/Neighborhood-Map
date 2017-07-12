@@ -22,10 +22,19 @@ Neighborhood Map depends on:
 
 ### Run
 
-Just open index.html through your favourite web-browser :
+Due to browser-security [works on mozilla firefox 53.0 (64-bit) though] the app cannot fetch a local json file , so you will run an http server to serve app files.
+
+At the root directory of the app files , run the following depending on your python version :
+
+Python 3:
 ```
-index.html
+python -m http.server 8080
 ```
+Python 2:
+```
+python -m SimpleHTTPServer 8080
+```
+Then to run the app you can visit http://localhost:8080/ 
 
 ### Test
 

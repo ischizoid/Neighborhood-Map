@@ -13,14 +13,14 @@ $.ajax('https://api.foursquare.com/v2/venues/explore', {
     v: '20170101'
   },
   success: function (data) {
-    console.log(data.response.groups[0].items);
+    // console.log(data.response.groups[0].items);
     getPlaces(data);
   },
   error: function (jqXHR, textStatus, errorThrown) {
-    apiError = 'foursquare API ERROR - ' + jqXHR.responseJSON.meta.errorDetail;
+    apiError = 'Foursquare API ERROR';
     // console.log(errorThrown);
     // console.log(textStatus);
-    // console.log(jqXHR.responseJSON.meta.errorDetail);
+    // console.log(jqXHR);
   }
 }).complete(function(jqXHR) {
   ko.applyBindings(new ViewModel(places, apiError, mapError));
